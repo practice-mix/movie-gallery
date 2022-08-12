@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.moviegallery.dao.UserGeoLocationMapper">
+  <resultMap id="BaseResultMap" type="com.example.moviegallery.dao.entity.UserGeoLocation">
+    <!--@mbg.generated-->
+    <!--@Table user_geo_location-->
+    <id column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="location" jdbcType="VARCHAR" property="location" />
+    <result column="updated_time" jdbcType="TIMESTAMP" property="updated_time" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    `uid`, `location`, updated_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from user_geo_location
+    where `uid` = #{uid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from user_geo_location
+    where `uid` = #{uid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.moviegallery.dao.entity.UserGeoLocation">
+    <!--@mbg.generated-->
+    insert into user_geo_location (`uid`, `location`, updated_time
+      )
+    values (#{uid,jdbcType=INTEGER}, #{location,jdbcType=VARCHAR}, #{updated_time,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.moviegallery.dao.entity.UserGeoLocation">
+    <!--@mbg.generated-->
+    insert into user_geo_location
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        `uid`,
+      </if>
+      <if test="location != null">
+        `location`,
+      </if>
+      <if test="updated_time != null">
+        updated_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="location != null">
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="updated_time != null">
+        #{updated_time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.moviegallery.dao.entity.UserGeoLocation">
+    <!--@mbg.generated-->
+    update user_geo_location
+    <set>
+      <if test="location != null">
+        `location` = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="updated_time != null">
+        updated_time = #{updated_time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where `uid` = #{uid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.moviegallery.dao.entity.UserGeoLocation">
+    <!--@mbg.generated-->
+    update user_geo_location
+    set `location` = #{location,jdbcType=VARCHAR},
+      updated_time = #{updated_time,jdbcType=TIMESTAMP}
+    where `uid` = #{uid,jdbcType=INTEGER}
+  </update>
+  <update id="updateBatch" parameterType="java.util.List">
+    <!--@mbg.generated-->
+    update user_geo_location
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="`location` = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when `uid` = #{item.uid,jdbcType=INTEGER} then #{item.location,jdbcType=VARCHAR}
+        </foreach>
+      </trim>
+      <trim prefix="updated_time = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when `uid` = #{item.uid,jdbcType=INTEGER} then #{item.updated_time,jdbcType=TIMESTAMP}
+        </foreach>
+      </trim>
+    </trim>
+    where `uid` in
+    <foreach close=")" collection="list" item="item" open="(" separator=", ">
+      #{item.uid,jdbcType=INTEGER}
+    </foreach>
+  </update>
+  <insert id="batchInsert" parameterType="map">
+    <!--@mbg.generated-->
+    insert into user_geo_location
+    (`uid`, `location`, updated_time)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.uid,jdbcType=INTEGER}, #{item.location,jdbcType=VARCHAR}, #{item.updated_time,jdbcType=TIMESTAMP}
+        )
+    </foreach>
+  </insert>
+
+  <insert id="upsertLocation" parameterType="com.example.moviegallery.dao.model.UserGeoLocationCoordinate">
+    replace into user_geo_location(`uid`,`location`)
+      values
+      (#{uid}, ST_GeomFromText('Point(${longitude} ${latitude})'))
+  </insert>
+
+  <select id="searchNearby" resultType="com.example.moviegallery.dao.model.UserLocationProjection">
+    select u. uid,u.username,u.phone_number,ST_X(location) as latitude, ST_Y(location) as longitude
+         , ST_Distance_Sphere(location,ST_GeomFromText('Point(${longitude} ${latitude})')) as distance
+    from user_geo_location ugl inner join `user` u on ugl.uid = u.uid
+    order by distance desc limit #{startIndex} ,  #{pageSize}
+  </select>
+  <select id="searchNearbyTotal" resultType="java.lang.Integer">
+    select count(*) as total
+    from user_geo_location ugl inner join `user` u on ugl.uid = u.uid
+  </select>
+
+
+</mapper>

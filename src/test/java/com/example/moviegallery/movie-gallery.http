@@ -1,0 +1,61 @@
+###
+PUT {{base_url}}/User/register
+Content-Type: application/json
+
+{
+  "username": "fake_data2",
+  "phone_number": "155557190520"
+}
+
+> {%
+client.test("success check", function() {
+  client.assert(response.status === 200, "response status is not 200");
+});
+%}
+
+<> 2022-08-01T145441.200.json
+<> 2022-08-01T145359.200.json
+
+###
+PUT {{base_url}}/UserGeoLocation/addLocation
+Content-Type: application/json
+
+{
+  "uid": 10,
+  "latitude": 10,
+  "longitude": 15
+
+}
+
+<> 2022-08-01T145554.200.json
+<> 2022-08-01T145546.200.json
+<> 2022-08-01T145539.200.json
+<> 2022-08-01T145530.200.json
+<> 2022-08-01T145519.200.json
+<> 2022-08-01T145511.200.json
+<> 2022-08-01T145507.200.json
+<> 2022-08-01T145503.200.json
+<> 2022-08-01T100132.200.json
+<> 2022-08-01T092309.200.json
+<> 2022-07-31T173124.200.json
+<> 2022-07-31T172635.500.json
+<> 2022-07-31T172431.500.json
+<> 2022-07-31T172121.500.json
+<> 2022-07-31T172022.500.json
+<> 2022-07-31T170840.500.json
+<> 2022-07-31T170557.500.html
+
+
+
+###
+GET {{base_url}}/UserGeoLocation/searchNearby?latitude=10&longitude=10&pageSize=11&pageNum=1
+
+<> 2022-08-01T145655.200.json
+
+###
+GET {{base_url}}/UserGeoLocation/searchNearby?latitude=10&longitude=10&pageSize=11&pageNum=1
+
+<> 2022-08-01T145751.200.json
+<> 2022-08-01T145745.200.json
+
+
