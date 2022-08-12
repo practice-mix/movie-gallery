@@ -7,7 +7,7 @@ import lombok.Data;
 public class UserLocationProjection {
     private Integer uid;
 
-    private String username;
+    private String nickname;
     private String phone_number;
 
     private Float latitude;

@@ -5,12 +5,13 @@
     <!--@mbg.generated-->
     <!--@Table `user`-->
     <id column="uid" jdbcType="INTEGER" property="uid" />
-    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="avatar" jdbcType="LONGVARCHAR" property="avatar" />
     <result column="phone_number" jdbcType="VARCHAR" property="phone_number" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    `uid`, username, phone_number
+    `uid`, nickname, avatar, phone_number
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--@mbg.generated-->
@@ -26,23 +27,31 @@
   </delete>
   <insert id="insert" keyColumn="uid" keyProperty="uid" parameterType="com.example.moviegallery.dao.entity.User" useGeneratedKeys="true">
     <!--@mbg.generated-->
-    insert into `user` (username, phone_number)
-    values (#{username,jdbcType=VARCHAR}, #{phone_number,jdbcType=VARCHAR})
+    insert into `user` (nickname, avatar, phone_number
+      )
+    values (#{nickname,jdbcType=VARCHAR}, #{avatar,jdbcType=LONGVARCHAR}, #{phone_number,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" keyColumn="uid" keyProperty="uid" parameterType="com.example.moviegallery.dao.entity.User" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into `user`
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="username != null">
-        username,
+      <if test="nickname != null">
+        nickname,
+      </if>
+      <if test="avatar != null">
+        avatar,
       </if>
       <if test="phone_number != null">
         phone_number,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="username != null">
-        #{username,jdbcType=VARCHAR},
+      <if test="nickname != null">
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null">
+        #{avatar,jdbcType=LONGVARCHAR},
       </if>
       <if test="phone_number != null">
         #{phone_number,jdbcType=VARCHAR},
@@ -53,8 +62,11 @@
     <!--@mbg.generated-->
     update `user`
     <set>
-      <if test="username != null">
-        username = #{username,jdbcType=VARCHAR},
+      <if test="nickname != null">
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null">
+        avatar = #{avatar,jdbcType=LONGVARCHAR},
       </if>
       <if test="phone_number != null">
         phone_number = #{phone_number,jdbcType=VARCHAR},
@@ -65,7 +77,8 @@
   <update id="updateByPrimaryKey" parameterType="com.example.moviegallery.dao.entity.User">
     <!--@mbg.generated-->
     update `user`
-    set username = #{username,jdbcType=VARCHAR},
+    set nickname = #{nickname,jdbcType=VARCHAR},
+      avatar = #{avatar,jdbcType=LONGVARCHAR},
       phone_number = #{phone_number,jdbcType=VARCHAR}
     where `uid` = #{uid,jdbcType=INTEGER}
   </update>
@@ -73,9 +86,14 @@
     <!--@mbg.generated-->
     update `user`
     <trim prefix="set" suffixOverrides=",">
-      <trim prefix="username = case" suffix="end,">
+      <trim prefix="nickname = case" suffix="end,">
         <foreach collection="list" index="index" item="item">
-          when `uid` = #{item.uid,jdbcType=INTEGER} then #{item.username,jdbcType=VARCHAR}
+          when `uid` = #{item.uid,jdbcType=INTEGER} then #{item.nickname,jdbcType=VARCHAR}
+        </foreach>
+      </trim>
+      <trim prefix="avatar = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when `uid` = #{item.uid,jdbcType=INTEGER} then #{item.avatar,jdbcType=LONGVARCHAR}
         </foreach>
       </trim>
       <trim prefix="phone_number = case" suffix="end,">
@@ -92,18 +110,12 @@
   <insert id="batchInsert" keyColumn="uid" keyProperty="uid" parameterType="map" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into `user`
-    (username, phone_number)
+    (nickname, avatar, phone_number)
     values
     <foreach collection="list" item="item" separator=",">
-      (#{item.username,jdbcType=VARCHAR}, #{item.phone_number,jdbcType=VARCHAR})
+      (#{item.nickname,jdbcType=VARCHAR}, #{item.avatar,jdbcType=LONGVARCHAR}, #{item.phone_number,jdbcType=VARCHAR}
+        )
     </foreach>
-  </insert>
-
-  <insert id="upsert" keyColumn="uid" keyProperty="uid" parameterType="com.example.moviegallery.dao.entity.User" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into `user` (username, phone_number)
-    values (#{username,jdbcType=VARCHAR}, #{phone_number,jdbcType=VARCHAR})
-    on duplicate key update username=#{username}
   </insert>
 
   <select id="findByPhoneNumber" resultMap="BaseResultMap">

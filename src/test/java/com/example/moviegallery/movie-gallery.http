@@ -3,7 +3,7 @@ PUT {{base_url}}/User/register
 Content-Type: application/json
 
 {
-  "username": "fake_data2",
+  "nickname": "fake_data2",
   "phone_number": "155557190520"
 }
 

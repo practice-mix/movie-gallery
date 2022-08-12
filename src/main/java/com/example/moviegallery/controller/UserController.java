@@ -1,10 +1,11 @@
 package com.example.moviegallery.controller;
 
+import com.example.moviegallery.controller.model.UserRegisterRequest;
 import com.example.moviegallery.dao.UserMapper;
 import com.example.moviegallery.dao.entity.User;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,9 +20,19 @@ public class UserController {
 
 
     @PutMapping("/User/register")
-    public ResponseEntity<User> register(@Valid @RequestBody User user) {
-        userMapper.upsert(user);
-        User nUser = userMapper.findByPhoneNumber(user.getPhone_number());
+    public ResponseEntity<User> register(@Valid @RequestBody UserRegisterRequest request) {
+        User oldUser = userMapper.findByPhoneNumber(request.getPhone_number());
+        if (oldUser != null) {
+            BeanUtils.copyProperties(request, oldUser);
+            userMapper.updateByPrimaryKey(oldUser);
+
+        } else {
+            User nUser = new User();
+            BeanUtils.copyProperties(request, nUser);
+            userMapper.insert(nUser);
+
+        }
+        User nUser = userMapper.findByPhoneNumber(request.getPhone_number());
 
         return ResponseEntity.ok(nUser);
     }
