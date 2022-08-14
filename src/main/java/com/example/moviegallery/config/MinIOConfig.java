@@ -8,13 +8,13 @@ import org.springframework.context.annotation.Configuration;
 public class MinIOConfig {
 
     @Bean
-    public MinioClient minIOConfig() {
+    public MinioClient minioClient() {
         MinioClient minioClient =
                 MinioClient.builder()
-                        .endpoint("http://127.0.0.1:9000")
-                        .credentials("apiuser", "apiuser1234")
+                        .endpoint("http://192.168.0.100:9000")
+                        .credentials("minioadmin", "minioadmin")
                         .build();
 
-        return  minioClient;
+        return minioClient;
     }
 }

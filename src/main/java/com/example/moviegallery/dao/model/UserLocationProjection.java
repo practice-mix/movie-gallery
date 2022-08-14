@@ -9,6 +9,7 @@ public class UserLocationProjection {
 
     private String nickname;
     private String phone_number;
+    private String avatar;
 
     private Float latitude;
     private Float longitude;

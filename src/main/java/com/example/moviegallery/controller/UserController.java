@@ -1,14 +1,14 @@
 package com.example.moviegallery.controller;
 
 import com.example.moviegallery.controller.model.UserRegisterRequest;
+import com.example.moviegallery.controller.model.UserUpdateAvatarRequest;
 import com.example.moviegallery.dao.UserMapper;
 import com.example.moviegallery.dao.entity.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -20,6 +20,7 @@ public class UserController {
 
 
     @PutMapping("/User/register")
+    @Transactional
     public ResponseEntity<User> register(@Valid @RequestBody UserRegisterRequest request) {
         User oldUser = userMapper.findByPhoneNumber(request.getPhone_number());
         if (oldUser != null) {
@@ -37,6 +38,22 @@ public class UserController {
         return ResponseEntity.ok(nUser);
     }
 
+    @GetMapping("/User/getDetail")
+    public ResponseEntity<User> getDetail(@RequestParam Integer uid) {
+        User nUser = userMapper.selectByPrimaryKey(uid);
+
+        return ResponseEntity.ok(nUser);
+    }
+
+    @PatchMapping("/User/updateAvatar")
+    public ResponseEntity<Void> updateAvatar(@RequestBody UserUpdateAvatarRequest request) {
+        User user = new User();
+        BeanUtils.copyProperties(request, user);
+
+        userMapper.updateByPrimaryKeySelective(user);
+
+        return ResponseEntity.ok(null);
+    }
 
 
 }
