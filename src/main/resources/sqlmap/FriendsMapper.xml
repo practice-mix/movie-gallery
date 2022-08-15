@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.moviegallery.dao.FriendsMapper">
+  <resultMap id="BaseResultMap" type="com.example.moviegallery.dao.entity.Friends">
+    <!--@mbg.generated-->
+    <!--@Table friends-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="friend_uid" jdbcType="INTEGER" property="friend_uid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, `uid`, friend_uid
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from friends
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from friends
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.moviegallery.dao.entity.Friends" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into friends (`uid`, friend_uid)
+    values (#{uid,jdbcType=INTEGER}, #{friend_uid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.moviegallery.dao.entity.Friends" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into friends
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        `uid`,
+      </if>
+      <if test="friend_uid != null">
+        friend_uid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="friend_uid != null">
+        #{friend_uid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.moviegallery.dao.entity.Friends">
+    <!--@mbg.generated-->
+    update friends
+    <set>
+      <if test="uid != null">
+        `uid` = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="friend_uid != null">
+        friend_uid = #{friend_uid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.moviegallery.dao.entity.Friends">
+    <!--@mbg.generated-->
+    update friends
+    set `uid` = #{uid,jdbcType=INTEGER},
+      friend_uid = #{friend_uid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateBatch" parameterType="java.util.List">
+    <!--@mbg.generated-->
+    update friends
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="`uid` = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when id = #{item.id,jdbcType=INTEGER} then #{item.uid,jdbcType=INTEGER}
+        </foreach>
+      </trim>
+      <trim prefix="friend_uid = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when id = #{item.id,jdbcType=INTEGER} then #{item.friend_uid,jdbcType=INTEGER}
+        </foreach>
+      </trim>
+    </trim>
+    where id in
+    <foreach close=")" collection="list" item="item" open="(" separator=", ">
+      #{item.id,jdbcType=INTEGER}
+    </foreach>
+  </update>
+  <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into friends
+    (`uid`, friend_uid)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.uid,jdbcType=INTEGER}, #{item.friend_uid,jdbcType=INTEGER})
+    </foreach>
+  </insert>
+  <insert id="insertOrUpdate" keyColumn="id" keyProperty="id" parameterType="com.example.moviegallery.dao.entity.Friends" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into friends
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      `uid`,
+      friend_uid,
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      #{uid,jdbcType=INTEGER},
+      #{friend_uid,jdbcType=INTEGER},
+    </trim>
+    on duplicate key update 
+    <trim suffixOverrides=",">
+      <if test="id != null">
+        id = #{id,jdbcType=INTEGER},
+      </if>
+      `uid` = #{uid,jdbcType=INTEGER},
+      friend_uid = #{friend_uid,jdbcType=INTEGER},
+    </trim>
+  </insert>
+  <insert id="insertOrUpdateSelective" keyColumn="id" keyProperty="id" parameterType="com.example.moviegallery.dao.entity.Friends" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into friends
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="uid != null">
+        `uid`,
+      </if>
+      <if test="friend_uid != null">
+        friend_uid,
+      </if>
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="friend_uid != null">
+        #{friend_uid,jdbcType=INTEGER},
+      </if>
+    </trim>
+    on duplicate key update 
+    <trim suffixOverrides=",">
+      <if test="id != null">
+        id = #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null">
+        `uid` = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="friend_uid != null">
+        friend_uid = #{friend_uid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="list" resultType="com.example.moviegallery.dao.entity.User">
+        select u.* from friends f inner join user u on f.friend_uid = u.uid
+            where f.uid=#{uid,jdbcType=INTEGER}
+    limit #{startIndex},#{pageSize}
+  </select>
+   <select id="listTotal" resultType="java.lang.Integer">
+        select count(*) from friends f inner join user u on f.uid = u.uid
+            where f.uid=#{uid,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByUidAndFriendUid" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from friends where uid=#{uid} and friend_uid=#{friend_uid}
+  </select>
+</mapper>

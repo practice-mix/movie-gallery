@@ -1,0 +1,21 @@
+###
+PUT {{base_url}}/User/register
+Content-Type: application/json
+
+{
+  "nickname": "fake_data2",
+  "phone_number": "155557190520"
+}
+
+> {%
+client.test("success check", function() {
+  client.assert(response.status === 200, "response status is not 200");
+});
+%}
+
+<> 2022-08-01T145441.200.json
+<> 2022-08-01T145359.200.json
+
+###
+GET {{base_url}}/User/getDetailV2?uid=2&selfUid=1
+

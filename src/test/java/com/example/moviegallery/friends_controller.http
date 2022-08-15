@@ -1,0 +1,12 @@
+###
+GET {{base_url}}/Friends/list?uid=39
+
+
+###
+PUT {{base_url}}/Friends/add
+Content-Type: application/json
+
+{
+  "uid": 1,
+  "friend_uid" : 2
+}

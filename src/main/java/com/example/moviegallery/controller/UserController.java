@@ -1,8 +1,11 @@
 package com.example.moviegallery.controller;
 
+import com.example.moviegallery.controller.model.UserGetDetailV2Response;
 import com.example.moviegallery.controller.model.UserRegisterRequest;
 import com.example.moviegallery.controller.model.UserUpdateAvatarRequest;
+import com.example.moviegallery.dao.FriendsMapper;
 import com.example.moviegallery.dao.UserMapper;
+import com.example.moviegallery.dao.entity.Friends;
 import com.example.moviegallery.dao.entity.User;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,8 @@ public class UserController {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private FriendsMapper friendsMapper;
 
 
     @PutMapping("/User/register")
@@ -43,6 +48,20 @@ public class UserController {
         User nUser = userMapper.selectByPrimaryKey(uid);
 
         return ResponseEntity.ok(nUser);
+    }
+
+    @GetMapping("User/getDetailV2")
+    public ResponseEntity<UserGetDetailV2Response> getDetailV2(@RequestParam Integer uid,
+                                                               @RequestParam Integer selfUid) {
+
+        User user = userMapper.selectByPrimaryKey(uid);
+        UserGetDetailV2Response response = new UserGetDetailV2Response();
+        BeanUtils.copyProperties(user, response);
+
+        Friends friends = friendsMapper.selectByUidAndFriendUid(uid, selfUid);
+        response.setAreFriend(friends != null);
+
+        return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/User/updateAvatar")
