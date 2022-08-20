@@ -58,7 +58,7 @@ public class UserController {
         UserGetDetailV2Response response = new UserGetDetailV2Response();
         BeanUtils.copyProperties(user, response);
 
-        Friends friends = friendsMapper.selectByUidAndFriendUid(uid, selfUid);
+        Friends friends = friendsMapper.selectByUidAndFriendUid(selfUid, uid);
         response.setAreFriend(friends != null);
 
         return ResponseEntity.ok(response);
