@@ -34,6 +34,7 @@ public class SocketHandler {
     @OnConnect
     public void onConnect(SocketIOClient client) {
         String uid = client.getHandshakeData().getSingleUrlParam(EventConstants.UID);
+        System.out.println("onConnect,uid:" + uid);
         onlineUserMap.put(uid, client);
 
     }
@@ -41,12 +42,14 @@ public class SocketHandler {
     @OnDisconnect
     public void onDisconnect(SocketIOClient client) {
         String uid = client.getHandshakeData().getSingleUrlParam(EventConstants.UID);
+        System.out.println("onDisconnect,uid:" + uid);
         onlineUserMap.remove(uid);
     }
 
 
     @OnEvent(EventConstants.CALL)
     public void onCall(SocketIOClient client, AckRequest ackRequest, CallRequest message) {
+        System.out.println("onCall,data:" + message);
         String room = message.getRoom();
 
         SocketIOClient peerClient = onlineUserMap.get(message.getPeerUid().toString());
@@ -77,6 +80,7 @@ public class SocketHandler {
 
     @OnEvent(EventConstants.JOIN)
     public void onJoin(SocketIOClient client, AckRequest ackRequest, JoinRequest message) {
+        System.out.println("onJoin,data:" + message);
         String room = message.getRoom();
         Collection<SocketIOClient> clientsInRoom = server.getRoomOperations(room).getClients();
         int numClients = clientsInRoom.size();
@@ -94,6 +98,7 @@ public class SocketHandler {
 
     @OnEvent(EventConstants.BYE)
     public void onBye(SocketIOClient client, AckRequest ackRequest, ByeRequest request) {
+        System.out.println("onBye,data = " + request);
         String room = request.getRoom();
         client.leaveRoom(room);
         userBusyStatusMap.remove(request.getUid());
@@ -109,9 +114,18 @@ public class SocketHandler {
      */
     @OnEvent(EventConstants.MESSAGE)
     public void onMessage(SocketIOClient client, AckRequest ackRequest, SignalingMessage message) {
+        System.out.println("onMessage,data = " + message);
         server.getRoomOperations(message.getRoom()).sendEvent(EventConstants.MESSAGE, message);
 
     }
 
 
+    /**
+     * test only. see $project\src\test\resources\static\my_index.html
+     */
+    @OnEvent("chatevent")
+    public void onChatevent(SocketIOClient client, AckRequest ackRequest, ChatObject data) {
+        System.out.println("onChatevent,data = " + data);
+        server.getBroadcastOperations().sendEvent("chatevent", data);
+    }
 }

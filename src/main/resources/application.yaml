@@ -1,4 +1,5 @@
-
+server:
+  port: 8080
 spring:
   application:
     name: movie-gallery
@@ -18,9 +19,4 @@ logging:
 # ===== manually added library
 socketio: # com.corundumstudio.socketio.Configuration
   port: 8181
-  allowCustomRequests: true
-  bossCount: 0 # 0 = current_processors_amount * 2
-  workCount: 0 # 0 = current_processors_amount * 2
-  pingInterval: 25000
-  pingTimeout: 60000
-  upgradeTimeout: 10000
+
