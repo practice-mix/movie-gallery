@@ -121,7 +121,7 @@ public class SocketHandler {
 
 
     /**
-     * test only. see $project\src\test\resources\static\my_index.html
+     * test only. see /frontend/index.html
      */
     @OnEvent("chatevent")
     public void onChatevent(SocketIOClient client, AckRequest ackRequest, ChatObject data) {

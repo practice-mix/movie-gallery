@@ -26,10 +26,13 @@ public class SocketIOConfig implements ApplicationRunner {
     public SocketIOServer socketIOServer() {
         com.corundumstudio.socketio.Configuration config = new com.corundumstudio.socketio.Configuration();
         config.setPort(port);
+        config.setPingInterval(3000);
+        config.setPingTimeout(2000);
         SocketIOServer socketIOServer = new SocketIOServer(config);
 
         return socketIOServer;
     }
+
 
     @Bean
     public SpringAnnotationScanner springAnnotationScanner(SocketIOServer socketServer) {
