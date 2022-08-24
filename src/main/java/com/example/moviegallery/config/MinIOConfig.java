@@ -7,11 +7,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MinIOConfig {
 
+    public static final String MINIO_SERVER_URL_BASE = "http://localhost:9000";
+
     @Bean
     public MinioClient minioClient() {
         MinioClient minioClient =
                 MinioClient.builder()
-                        .endpoint("http://192.168.0.100:9000")
+                        .endpoint(MINIO_SERVER_URL_BASE)
                         .credentials("minioadmin", "minioadmin")
                         .build();
 
