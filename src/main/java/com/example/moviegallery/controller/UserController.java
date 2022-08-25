@@ -1,5 +1,6 @@
 package com.example.moviegallery.controller;
 
+import com.example.moviegallery.controller.model.UserGetDetailResponse;
 import com.example.moviegallery.controller.model.UserGetDetailV2Response;
 import com.example.moviegallery.controller.model.UserRegisterRequest;
 import com.example.moviegallery.controller.model.UserUpdateAvatarRequest;
@@ -44,15 +45,22 @@ public class UserController {
     }
 
     @GetMapping("/User/getDetail")
-    public ResponseEntity<User> getDetail(@RequestParam Integer uid) {
-        User nUser = userMapper.selectByPrimaryKey(uid);
+    public ResponseEntity<UserGetDetailResponse> getDetail(@RequestParam Integer uid) {
+        User user = userMapper.selectByPrimaryKey(uid);
+        UserGetDetailResponse response = new UserGetDetailResponse();
+        BeanUtils.copyProperties(user, response);
 
-        return ResponseEntity.ok(nUser);
+        return ResponseEntity.ok(response);
     }
 
+    /**
+     * bad design, friend relationship should be separated from user, it should be queried from FriendContoller
+     */
+    @Deprecated
     @GetMapping("User/getDetailV2")
-    public ResponseEntity<UserGetDetailV2Response> getDetailV2(@RequestParam Integer uid,
-                                                               @RequestParam Integer selfUid) {
+    public ResponseEntity<UserGetDetailV2Response> getDetailV2(@RequestParam Integer selfUid,
+                                                               @RequestParam Integer uid
+    ) {
 
         User user = userMapper.selectByPrimaryKey(uid);
         UserGetDetailV2Response response = new UserGetDetailV2Response();

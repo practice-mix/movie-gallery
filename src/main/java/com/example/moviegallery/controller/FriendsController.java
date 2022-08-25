@@ -32,9 +32,9 @@ public class FriendsController {
     }
 
     @PutMapping("Friends/add")
-    public ResponseEntity<Void> add(@Valid @RequestBody FriendsAddRequest request){
+    public ResponseEntity<Void> add(@Valid @RequestBody FriendsAddRequest request) {
         Friends record = new Friends();
-        BeanUtils.copyProperties(request,record);
+        BeanUtils.copyProperties(request, record);
         Friends friends = friendsMapper.selectByUidAndFriendUid(request.getUid(), request.getFriend_uid());
         if (friends != null) {
             return ResponseEntity.ok(null);
@@ -42,5 +42,17 @@ public class FriendsController {
 
         friendsMapper.insert(record);
         return ResponseEntity.ok(null);
+    }
+
+    @GetMapping("Friends/isFriend")
+    public ResponseEntity<Boolean> isFriend(
+            @RequestParam Integer selfUid,
+            @RequestParam Integer uid
+    ) {
+        Friends friends = friendsMapper.selectByUidAndFriendUid(selfUid, uid);
+        if (friends != null) {
+            return ResponseEntity.ok(true);
+        }
+        return ResponseEntity.ok(false);
     }
 }
