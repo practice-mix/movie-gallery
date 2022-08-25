@@ -57,11 +57,13 @@ public class SocketHandler {
             if (userBusyStatusMap.get(message.getPeerUid()) != null
                     && userBusyStatusMap.get(message.getPeerUid())) {
                 client.sendEvent(EventConstants.BUSY);
+                System.out.println("send_event_busy," + message);
                 return;
             }
 
             client.joinRoom(room);
             client.sendEvent(EventConstants.CREATED);
+            System.out.println("send_event_created," + message);
             JoinServerPush pushObject = new JoinServerPush();
             pushObject.setRoom(message.getRoom());
             pushObject.setUid(message.getPeerUid());
@@ -69,10 +71,12 @@ public class SocketHandler {
             userBusyStatusMap.put(message.getUid(), true);
 
             peerClient.sendEvent(EventConstants.JOIN, pushObject);
+            System.out.println("send_event_join," + message);
 
 
         } else {
             client.sendEvent(EventConstants.OFFLINE);
+            System.out.println("send_event_offline," + message);
 
         }
 
@@ -87,24 +91,28 @@ public class SocketHandler {
         if (numClients > 0) {
             client.joinRoom(room);
             client.sendEvent(EventConstants.JOINED, room);
+            System.out.println("send_event_joined," + message);
             userBusyStatusMap.put(message.getUid(), true);
 
             server.getRoomOperations(room).sendEvent(EventConstants.READY, room);
+            System.out.println("send_event_ready," + message);
 
         } else {
             client.sendEvent(EventConstants.PEER_LEAVED);
+            System.out.println("send_event_peer_leaved," + message);
         }
     }
 
     @OnEvent(EventConstants.BYE)
-    public void onBye(SocketIOClient client, AckRequest ackRequest, ByeRequest request) {
-        System.out.println("onBye,data = " + request);
-        String room = request.getRoom();
+    public void onBye(SocketIOClient client, AckRequest ackRequest, ByeRequest message) {
+        System.out.println("onBye,data = " + message);
+        String room = message.getRoom();
         client.leaveRoom(room);
-        userBusyStatusMap.remove(request.getUid());
+        userBusyStatusMap.remove(message.getUid());
         BroadcastOperations roomOperations = server.getRoomOperations(room);
         if (roomOperations.getClients().size() > 0) {
             roomOperations.sendEvent(EventConstants.BYE, room);
+            System.out.println("send_event_bye," + message);
         }
     }
 
@@ -116,6 +124,7 @@ public class SocketHandler {
     public void onMessage(SocketIOClient client, AckRequest ackRequest, SignalingMessage message) {
         System.out.println("onMessage,data = " + message);
         server.getRoomOperations(message.getRoom()).sendEvent(EventConstants.MESSAGE, message);
+        System.out.println("send_event_message," + message);
 
     }
 
@@ -124,8 +133,9 @@ public class SocketHandler {
      * test only. see /frontend/index.html
      */
     @OnEvent("chatevent")
-    public void onChatevent(SocketIOClient client, AckRequest ackRequest, ChatObject data) {
-        System.out.println("onChatevent,data = " + data);
-        server.getBroadcastOperations().sendEvent("chatevent", data);
+    public void onChatevent(SocketIOClient client, AckRequest ackRequest, ChatObject message) {
+        System.out.println("onChatevent,data = " + message);
+        server.getBroadcastOperations().sendEvent("chatevent", message);
+        System.out.println("send_event_chatevent," + message);
     }
 }
