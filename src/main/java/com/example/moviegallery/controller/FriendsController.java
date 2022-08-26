@@ -10,6 +10,7 @@ import com.example.moviegallery.dao.model.FriendsListDTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,6 +33,7 @@ public class FriendsController {
     }
 
     @PutMapping("Friends/add")
+    @Transactional
     public ResponseEntity<Void> add(@Valid @RequestBody FriendsAddRequest request) {
         Friends record = new Friends();
         BeanUtils.copyProperties(request, record);
