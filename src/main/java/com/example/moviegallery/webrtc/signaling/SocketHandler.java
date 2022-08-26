@@ -81,7 +81,7 @@ public class SocketHandler {
 
 
         } else {
-            client.sendEvent(EventConstants.OFFLINE);
+            client.sendEvent(EventConstants.OFFLINE, room);
             log.info("send_event_offline," + message);
 
         }
@@ -103,8 +103,9 @@ public class SocketHandler {
             log.info("send_event_ready," + message);
 
         } else {
-            client.sendEvent(EventConstants.PEER_LEAVED);
-            log.info("send_event_peer_leaved," + message);
+            client.sendEvent(EventConstants.OFFLINE, room);
+            log.info("send_event_offline," + message);
+
         }
     }
 
