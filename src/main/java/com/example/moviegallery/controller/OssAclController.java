@@ -31,16 +31,15 @@ public class OssAclController {
     @SneakyThrows
     public ResponseEntity<RequestTokenResponse> requestToken() {
         Map<String, String> reqParams = new HashMap<String, String>();
-        reqParams.put("response-content-type", "application/json");
         String objectName = UUID.randomUUID().toString().replace("-", "") + ".jpg";
-        String getUrl =
-                minioClient.getPresignedObjectUrl(
-                        GetPresignedObjectUrlArgs.builder()
-                                .method(Method.GET)
-                                .bucket(BUCKET_NAME_MOVIE_GALLERY)
-                                .object(objectName)
-                                .extraQueryParams(reqParams)
-                                .build());
+//        String getUrl =
+//                minioClient.getPresignedObjectUrl(
+//                        GetPresignedObjectUrlArgs.builder()
+//                                .method(Method.GET)
+//                                .bucket(BUCKET_NAME_MOVIE_GALLERY)
+//                                .object(objectName)
+//                                .build());
+        String getUrl = MinIOConfig.MINIO_SERVER_URL_BASE + "/" + BUCKET_NAME_MOVIE_GALLERY + "/" + objectName;
         System.out.println(getUrl);
         String putUrl =
                 minioClient.getPresignedObjectUrl(
