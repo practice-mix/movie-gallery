@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MinIOConfig {
 
-    public static final String MINIO_SERVER_URL_BASE = "http://localhost:9000";
+    public static final String MINIO_SERVER_URL_BASE = "https://socialme.hopto.org/";
 
     @Bean
     public MinioClient minioClient() {

@@ -23,7 +23,6 @@ import java.util.concurrent.TimeUnit;
 @RestController
 public class OssAclController {
     public static final String BUCKET_NAME_MOVIE_GALLERY = "movie-gallery";
-    private static final String HTTPS_URL_BASE = "https://socialme.hopto.org";
 
     @Autowired
     private MinioClient minioClient;
@@ -33,7 +32,7 @@ public class OssAclController {
     public ResponseEntity<RequestTokenResponse> requestToken() {
         Map<String, String> reqParams = new HashMap<String, String>();
         reqParams.put("response-content-type", "application/json");
-        String objectName = UUID.randomUUID().toString().replace("-", "");
+        String objectName = UUID.randomUUID().toString().replace("-", "") + ".jpg";
         String getUrl =
                 minioClient.getPresignedObjectUrl(
                         GetPresignedObjectUrlArgs.builder()
@@ -42,7 +41,6 @@ public class OssAclController {
                                 .object(objectName)
                                 .extraQueryParams(reqParams)
                                 .build());
-        getUrl = getUrl.replaceFirst(MinIOConfig.MINIO_SERVER_URL_BASE, HTTPS_URL_BASE);
         System.out.println(getUrl);
         String putUrl =
                 minioClient.getPresignedObjectUrl(
@@ -52,7 +50,6 @@ public class OssAclController {
                                 .object(objectName)
                                 .expiry(5, TimeUnit.MINUTES)
                                 .build());
-        putUrl = putUrl.replaceFirst(MinIOConfig.MINIO_SERVER_URL_BASE, HTTPS_URL_BASE);
         System.out.println(putUrl);
 
         RequestTokenResponse requestTokenResponse = new RequestTokenResponse();
