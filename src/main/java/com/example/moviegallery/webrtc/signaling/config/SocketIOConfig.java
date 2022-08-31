@@ -26,7 +26,7 @@ public class SocketIOConfig implements ApplicationRunner {
     public SocketIOServer socketIOServer() {
         com.corundumstudio.socketio.Configuration config = new com.corundumstudio.socketio.Configuration();
         config.setPort(port);
-        config.setPingInterval(10000);
+        config.setPingInterval(60000);
         config.setPingTimeout(3000);
         SocketIOServer socketIOServer = new SocketIOServer(config);
 
