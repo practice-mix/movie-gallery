@@ -20,7 +20,6 @@ public class MyMqttCallback implements MqttCallbackExtended {
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
 
-        // TODO: 2022/8/30
     }
 
     @Override

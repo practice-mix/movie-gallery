@@ -24,7 +24,10 @@ public class MqttConfig {
 //                options.setUserName("username");
 //                options.setPassword("password".toCharArray());
         options.setAutomaticReconnect(true);
-        options.setMaxReconnectDelay(128000);
+        options.setMaxReconnectDelay(5000);
+        options.setKeepAliveInterval(5);
+        options.setConnectionTimeout(3);
+        options.setCleanSession(false);
 
         client.connect(options);
         return client;
