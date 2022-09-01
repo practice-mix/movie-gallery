@@ -1,5 +1,8 @@
 server:
   port: 8080
+  tomcat:
+    accesslog:
+      pattern: '{"time":"%{yyyy-MM-dd HH:mm:ss.SSSZ}t","method":"%m","url":"%U%q","statusCode":%s,"requestTime":%D,"contentType":"%{Content-Type}i","remoteIP":"%{X-Forwarded-For}i,%a"}'
 spring:
   application:
     name: movie-gallery
