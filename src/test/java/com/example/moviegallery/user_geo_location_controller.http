@@ -31,12 +31,12 @@ Content-Type: application/json
 
 
 ###
-GET {{base_url}}/UserGeoLocation/searchNearby?latitude=10&longitude=10&pageSize=11&pageNum=1
+GET {{base_url}}/UserGeoLocation/searchNearby?latitude=10&longitude=10&pageSize=11&pageNumber=1
 
 <> 2022-08-01T145655.200.json
 
 ###
-GET {{base_url}}/UserGeoLocation/searchNearby?latitude=10&longitude=10&pageSize=11&pageNum=1
+GET {{base_url}}/UserGeoLocation/searchNearby?latitude=10&longitude=10&pageSize=11&pageNumber=1
 
-<> 2022-08-01T145751.200.json
-<> 2022-08-01T145745.200.json
+###
+GET {{base_url}}/UserGeoLocation/searchNearby?latitude=10&longitude=10&pageSize=5&pageNumber=4

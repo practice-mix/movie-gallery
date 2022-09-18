@@ -118,7 +118,7 @@
     select u. uid,u.nickname,u.phone_number,u.avatar,ST_X(location) as latitude, ST_Y(location) as longitude
          , ST_Distance_Sphere(location,ST_GeomFromText('Point(${longitude} ${latitude})')) as distance
     from user_geo_location ugl inner join `user` u on ugl.uid = u.uid
-    order by distance desc limit #{startIndex} ,  #{pageSize}
+    order by distance  limit #{startIndex} ,  #{pageSize}
   </select>
   <select id="searchNearbyTotal" resultType="java.lang.Integer">
     select count(*) as total
