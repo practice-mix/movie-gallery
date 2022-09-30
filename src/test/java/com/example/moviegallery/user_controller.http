@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
   "nickname": "fake_data2",
-  "phone_number": "155557190520"
+  "phone_number": "15555719888"
 }
 
 > {%

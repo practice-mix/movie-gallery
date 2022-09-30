@@ -31,7 +31,7 @@ public class UserController {
         User oldUser = userMapper.findByPhoneNumber(request.getPhone_number());
         if (oldUser != null) {
             BeanUtils.copyProperties(request, oldUser);
-            userMapper.updateByPrimaryKey(oldUser);
+            userMapper.updateByPrimaryKeySelective(oldUser);
 
         } else {
             User nUser = new User();
