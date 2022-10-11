@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.moviegallery.dao.ErrorMapper">
+  <resultMap id="BaseResultMap" type="com.example.moviegallery.dao.entity.Error">
+    <!--@mbg.generated-->
+    <!--@Table error-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="message" jdbcType="LONGVARCHAR" property="message" />
+    <result column="stacktrace" jdbcType="LONGVARCHAR" property="stacktrace" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, message, stacktrace
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from error
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from error
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.moviegallery.dao.entity.Error" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into error (message, stacktrace)
+    values (#{message,jdbcType=LONGVARCHAR}, #{stacktrace,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.moviegallery.dao.entity.Error" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into error
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="message != null">
+        message,
+      </if>
+      <if test="stacktrace != null">
+        stacktrace,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="message != null">
+        #{message,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="stacktrace != null">
+        #{stacktrace,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.moviegallery.dao.entity.Error">
+    <!--@mbg.generated-->
+    update error
+    <set>
+      <if test="message != null">
+        message = #{message,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="stacktrace != null">
+        stacktrace = #{stacktrace,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.moviegallery.dao.entity.Error">
+    <!--@mbg.generated-->
+    update error
+    set message = #{message,jdbcType=LONGVARCHAR},
+      stacktrace = #{stacktrace,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateBatch" parameterType="java.util.List">
+    <!--@mbg.generated-->
+    update error
+    <trim prefix="set" suffixOverrides=",">
+      <trim prefix="message = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when id = #{item.id,jdbcType=INTEGER} then #{item.message,jdbcType=LONGVARCHAR}
+        </foreach>
+      </trim>
+      <trim prefix="stacktrace = case" suffix="end,">
+        <foreach collection="list" index="index" item="item">
+          when id = #{item.id,jdbcType=INTEGER} then #{item.stacktrace,jdbcType=LONGVARCHAR}
+        </foreach>
+      </trim>
+    </trim>
+    where id in
+    <foreach close=")" collection="list" item="item" open="(" separator=", ">
+      #{item.id,jdbcType=INTEGER}
+    </foreach>
+  </update>
+  <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into error
+    (message, stacktrace)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.message,jdbcType=LONGVARCHAR}, #{item.stacktrace,jdbcType=LONGVARCHAR})
+    </foreach>
+  </insert>
+  <insert id="insertOrUpdate" keyColumn="id" keyProperty="id" parameterType="com.example.moviegallery.dao.entity.Error" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into error
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      message,
+      stacktrace,
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      #{message,jdbcType=LONGVARCHAR},
+      #{stacktrace,jdbcType=LONGVARCHAR},
+    </trim>
+    on duplicate key update 
+    <trim suffixOverrides=",">
+      <if test="id != null">
+        id = #{id,jdbcType=INTEGER},
+      </if>
+      message = #{message,jdbcType=LONGVARCHAR},
+      stacktrace = #{stacktrace,jdbcType=LONGVARCHAR},
+    </trim>
+  </insert>
+  <insert id="insertOrUpdateSelective" keyColumn="id" keyProperty="id" parameterType="com.example.moviegallery.dao.entity.Error" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into error
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="message != null">
+        message,
+      </if>
+      <if test="stacktrace != null">
+        stacktrace,
+      </if>
+    </trim>
+    values
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="message != null">
+        #{message,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="stacktrace != null">
+        #{stacktrace,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+    on duplicate key update 
+    <trim suffixOverrides=",">
+      <if test="id != null">
+        id = #{id,jdbcType=INTEGER},
+      </if>
+      <if test="message != null">
+        message = #{message,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="stacktrace != null">
+        stacktrace = #{stacktrace,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>
