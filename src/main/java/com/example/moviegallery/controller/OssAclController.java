@@ -32,13 +32,6 @@ public class OssAclController {
     public ResponseEntity<RequestTokenResponse> requestToken() {
         Map<String, String> reqParams = new HashMap<String, String>();
         String objectName = UUID.randomUUID().toString().replace("-", "") + ".jpg";
-//        String getUrl =
-//                minioClient.getPresignedObjectUrl(
-//                        GetPresignedObjectUrlArgs.builder()
-//                                .method(Method.GET)
-//                                .bucket(BUCKET_NAME_MOVIE_GALLERY)
-//                                .object(objectName)
-//                                .build());
         String getUrl = MinIOConfig.MINIO_SERVER_URL_BASE + "/" + BUCKET_NAME_MOVIE_GALLERY + "/" + objectName;
         System.out.println(getUrl);
         String putUrl =
@@ -58,78 +51,82 @@ public class OssAclController {
         return ResponseEntity.ok(requestTokenResponse);
     }
 
-    private static final OkHttpClient okHttpClient;
+    static class Test {
+        private static final OkHttpClient okHttpClient;
 
-    static {
-        okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(5, TimeUnit.SECONDS)
-                .readTimeout(5, TimeUnit.SECONDS)
-                .writeTimeout(5, TimeUnit.SECONDS)
-                .addInterceptor(new Interceptor() {
-                    @NotNull
-                    @Override
-                    public Response intercept(@NotNull Chain chain) throws IOException {
-                        Request request = chain.request();
-                        System.out.println("intercept request = " + request);
-                        Response response = chain.proceed(request);
-                        System.out.println("intercept response = " + response);
+        static {
+            okHttpClient = new OkHttpClient.Builder()
+                    .connectTimeout(5, TimeUnit.SECONDS)
+                    .readTimeout(5, TimeUnit.SECONDS)
+                    .writeTimeout(5, TimeUnit.SECONDS)
+                    .addInterceptor(new Interceptor() {
+                        @NotNull
+                        @Override
+                        public Response intercept(@NotNull Chain chain) throws IOException {
+                            Request request = chain.request();
+                            System.out.println("intercept request = " + request);
+                            Response response = chain.proceed(request);
+                            System.out.println("intercept response = " + response);
 
-                        return response;
-                    }
-                })
-                .build();
+                            return response;
+                        }
+                    })
+                    .build();
 
-    }
-
-
-    public static void main(String[] args) {
-        OssAclController ossAclController = new OssAclController();
-        MinIOConfig minIOConfig = new MinIOConfig();
-        ossAclController.minioClient = minIOConfig.minioClient();
-
-        ResponseEntity<RequestTokenResponse> response = ossAclController.requestToken();
-        System.out.println("requestToken response = " + response);
-        RequestTokenResponse body = response.getBody();
-        String putUrl = body.getPutUrl();
-
-        uploadByOkHttp(putUrl);
-
-    }
+        }
 
 
-    @SneakyThrows
-    private static void uploadByOkHttp(String putUrl) {
-        okhttp3.MediaType fileContentType = okhttp3.MediaType.parse("File/*");
+        public static void main(String[] args) {
+            OssAclController ossAclController = new OssAclController();
+            MinIOConfig minIOConfig = new MinIOConfig();
+            ossAclController.minioClient = minIOConfig.minioClient();
+
+            ResponseEntity<RequestTokenResponse> response = ossAclController.requestToken();
+            System.out.println("requestToken response = " + response);
+            RequestTokenResponse body = response.getBody();
+            String putUrl = body.getPutUrl();
+
+            uploadByOkHttp(putUrl);
+
+        }
+
+
+        @SneakyThrows
+        private static void uploadByOkHttp(String putUrl) {
+            okhttp3.MediaType fileContentType = okhttp3.MediaType.parse("File/*");
 //        okhttp3.MediaType fileContentType = okhttp3.MediaType.parse("text/*");
 
-        // Create request body.
-        File file = new File("D:\\ProgramData\\minio\\mylog.log");
-        RequestBody requestBody = RequestBody.create(file, fileContentType);
+            // Create request body.
+            File file = new File("D:\\ProgramData\\minio\\mylog.log");
+            RequestBody requestBody = RequestBody.create(file, fileContentType);
 
-        // Create request builder.
-        Request.Builder builder = new Request.Builder();
-        // Set url.
-        builder = builder.url(putUrl);
-        // set method and request body.
-        builder.method("PUT", requestBody);
+            // Create request builder.
+            Request.Builder builder = new Request.Builder();
+            // Set url.
+            builder = builder.url(putUrl);
+            // set method and request body.
+            builder.method("PUT", requestBody);
 //        builder.addHeader("Content-Type", "File/*");
 //        builder.addHeader("Content-Type","text/*");
 
-        // Create request object.
-        Request request = builder.build();
+            // Create request object.
+            Request request = builder.build();
 
-        Call call = okHttpClient.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                e.printStackTrace();
-            }
+            Call call = okHttpClient.newCall(request);
+            call.enqueue(new Callback() {
+                @Override
+                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                    e.printStackTrace();
+                }
 
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                System.out.println("upload response = " + response);
-            }
-        });
+                @Override
+                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                    System.out.println("upload response = " + response);
+                }
+            });
+        }
+
     }
+
 
 }
